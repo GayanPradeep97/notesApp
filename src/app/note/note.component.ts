@@ -1,7 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NoteService } from '../note.service';
 import { Note } from '../note'
-import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup,Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+
+
+
+
 
 @Component({
   selector: 'app-note',
@@ -11,6 +16,7 @@ import { FormBuilder, FormGroup, Validator, Validators } from '@angular/forms';
 
 export class NoteComponent implements OnInit {
 
+  
 
   noteForm !: FormGroup;
   editForm !: FormGroup;
@@ -25,7 +31,7 @@ export class NoteComponent implements OnInit {
     note_des:'',
   }
 
-  constructor( private formBuilder: FormBuilder,  private noteServics:NoteService ){
+  constructor( private formBuilder: FormBuilder,  private noteServics:NoteService, private dialogRef: MatDialogRef<NoteComponent>){
 
       this.noteForm = this.formBuilder.group({
         title : ['',Validators.required],
@@ -55,11 +61,19 @@ export class NoteComponent implements OnInit {
       if(note){
         alert('Firestore adata added success');
         this.noteForm.reset();  
-        this.getAllNotes();    
+        this.getAllNotes(); 
+        
+       
       }
+
+      
      
     })
   }
+  
+
+
+
   //get data into display
   getAllNotes(){
     this.noteServics.getNotes().subscribe((res:Note[]) =>{
@@ -85,20 +99,29 @@ export class NoteComponent implements OnInit {
 
   //Updatee data
   updateNote(note:Note){
+    console.log('Note:', note);
+  
     const {value} = this.editForm
-    console.log(value);
-
-    (this.noteObj.id = note.id);
-    (this.noteObj.note_title = value.edit_title);
-    (this.noteObj.note_des = value.edit_description);
-
+    console.log('Edit Form Value:', value);
+  
+    this.noteObj.id = note.id;
+    this.noteObj.note_title = value.edit_title;
+    this.noteObj.note_des = value.edit_description;
+  
+    console.log('Note Object:', this.noteObj);
+  
     this.noteServics.updateNote(note, this.noteObj).then(()=>{
       alert('note updated successfull!')
-     
     })
+  
     this.editForm.reset();
-
   }
+  
+  
+  
+
 
   
+
+ 
 }

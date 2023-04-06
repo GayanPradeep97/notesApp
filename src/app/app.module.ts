@@ -8,23 +8,31 @@ import { provideFirebaseApp, initializeApp} from '@angular/fire/app';
 import { getFirestore, provideFirestore} from '@angular/fire/firestore';
 import { environment } from 'src/environments/environment';
 // import { AngularFireModule } from '@angular/fire';
-import { ReactiveFormsModule} from '@angular/forms'
+import { ReactiveFormsModule} from '@angular/forms';
+import { MatDialogModule} from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    NoteComponent
+    NoteComponent,
+  
+    
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
     provideFirestore(() => getFirestore()),
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDialogModule
 
   ],
-  providers: [],
+  providers: [
+    {provide: MatDialogRef, useValue: {}}
+     ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

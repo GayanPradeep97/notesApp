@@ -34,9 +34,10 @@ export class NoteService {
   }
 
   //update notes
-  updateNote(note:Note , notes:any){
+  updateNote(note: Note, notes: any) {
+    console.log('Note:', note);
     let docRef = doc(this.fs, `Notes/${note.id}`);
-
     return updateDoc(docRef, notes);
   }
+  
 }
